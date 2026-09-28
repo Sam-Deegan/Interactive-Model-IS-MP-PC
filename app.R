@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.2"
+B_03_25_version_chr <- "1.0.3"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -1994,6 +1994,9 @@ E_01_02_css_chr <- "
   .stat-hint { font-size: 0.72rem; color: #6C757D; font-style: italic; }
   .side-qr { flex: 0 0 auto; }
   .side-qr img { width: 56px; height: 56px; display: block; }
+  .sidebar-qr { text-align: center; margin-top: 1rem; font-size: 0.8rem; }
+  .sidebar-qr img { width: 110px; height: 110px; }
+  .sidebar-qr-name { font-weight: 700; color: #04204C; margin-top: 0.3rem; }
   .bslib-page-title { display: flex; align-items: center; gap: 0.3rem;
     width: 100%; }
   .title-qr { margin-left: auto; }
@@ -2213,7 +2216,16 @@ E_02_03_sidebar_lst <- sidebar(
     )
   ),
   actionButton("reset", "Reset Everything",
-               class = "btn-outline-secondary btn-sm w-100")
+               class = "btn-outline-secondary btn-sm w-100"),
+  tags$div(
+    class = "sidebar-qr",
+    tags$a(href = B_03_21_site_chr, target = "_blank",
+           tags$img(src = B_04_01_qr_src_chr,
+                    alt = paste("QR code for", B_03_21_site_chr))),
+    tags$div(class = "sidebar-qr-name", B_03_20_author_chr),
+    tags$div(tags$a(href = B_03_21_site_chr, target = "_blank",
+                    sub("^https?://", "", B_03_21_site_chr)))
+  )
 )
 
 #### E_03: Main Panel ##########################################################
