@@ -133,11 +133,11 @@ B_03_02_n_periods_int <- 20L
 # Note: Labels follow _shared/econ42550-roadmap.tex.
 
 B_03_03_stages_vec <- c(
-  "1.1  Introducing IS-MP-PC" = "1.1",
-  "1.2  Analysing the Model"  = "1.2",
-  "1.3  The Zero Lower Bound" = "1.3",
-  "1.4  Policy Rules and Banks" = "1.4",
-  "1.5  The Financial Cycle"  = "1.5"
+  "Stage 1: Introducing IS-MP-PC"   = "1.1",
+  "Stage 2: Analysing the Model"    = "1.2",
+  "Stage 3: The Zero Lower Bound"   = "1.3",
+  "Stage 4: Policy Rules and Banks" = "1.4",
+  "Stage 5: The Financial Cycle"    = "1.5"
 )
 
 ###### B_03_04: Scenarios ######################################################
@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.0"
+B_03_25_version_chr <- "1.0.1"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -1917,7 +1917,7 @@ D_04_01_narrate_fn <- function(sim_df, par, t_show, stage_num, shock_window,
   out <- c(out, pol)
 
   if (stage_num < 1.3 && now$mod_policy_rate_val < 0) {
-    out <- c(out, paste("Negative rates are allowed here; lecture 1.3 adds",
+    out <- c(out, paste("Negative rates are allowed here; stage 3 adds",
                         "the zero lower bound."))
   }
 
@@ -2019,7 +2019,10 @@ E_01_02_css_chr <- "
   .eq-new     { background: #61B77C; }
   .eq-changed { background: #0056A4; }
   .eq-legend  { font-size: 0.78rem; color: #6C757D; margin-top: 0.3rem; }
-  .eq-explain td.chg-note { max-width: 32rem; }
+  .eq-explain { width: 100%; table-layout: fixed; }
+  .eq-explain td.eq-label { width: 22%; white-space: normal; }
+  .eq-explain td.eq-math { width: 42%; }
+  .eq-explain td.chg-note { width: 36%; }
   .eq-explain td.eq-group-title { padding-top: 0.6rem; }
   .nota-table { width: 100%; font-size: 0.88rem; }
   .nota-table td { padding: 0.25rem 0.6rem 0.25rem 0; vertical-align: top;
@@ -2137,7 +2140,7 @@ E_01_04_nav_fn <- function(active = "Resources") {
 #   T_05_06). Only the current lecture's presets show; 1.1 has none.
 
 E_02_01_presets_lst <- T_05_04_presets_fn(
-  B_03_04_scenarios_lst, B_03_03_stages_vec, stage_word = "Lecture"
+  B_03_04_scenarios_lst, B_03_03_stages_vec, stage_word = ""
 )
 
 ###### E_02_02: Control Builder ################################################
@@ -2173,7 +2176,7 @@ E_02_02_control_fn <- function(id, min = NULL) {
 
 E_02_03_sidebar_lst <- sidebar(
   width = 380,
-  radioButtons("stage", "Lecture", choices = B_03_03_stages_vec,
+  radioButtons("stage", "Stage", choices = B_03_03_stages_vec,
                selected = "1.1"),
   conditionalPanel("input.stage != '1.1'", uiOutput("narrative")),
   accordion(
@@ -2531,7 +2534,7 @@ F_01_01_app_server_fn <- function(input, output, session) {
   output$preset_title <- renderUI({
     T_05_06_preset_title_fn(scn_now(),
                             input$stage, B_03_03_stages_vec,
-                            stage_word = "Lecture")
+                            stage_word = "")
   })
 
   # --- Reset ------------------------------------------------------------------
@@ -2646,7 +2649,8 @@ F_01_01_app_server_fn <- function(input, output, session) {
 
   # --- Equations, notation and explanation tabs -------------------------------
   output$eq_title <- renderText({
-    paste0("Lecture ", input$stage, ": The Model So Far")
+    paste0("Stage ", match(input$stage, B_03_03_stages_vec),
+           ": The Model So Far")
   })
 
   mj <- function(tex) HTML(paste0("\\(", tex, "\\)"))
@@ -2676,7 +2680,7 @@ F_01_01_app_server_fn <- function(input, output, session) {
 
   empty_note <- tags$div(
     class = "chg-note text-muted",
-    "These appear from lecture 1.2, once the model is solved."
+    "These appear from stage 2, once the model is solved."
   )
 
   # Tab 1: equations in four groups
@@ -2704,7 +2708,7 @@ F_01_01_app_server_fn <- function(input, output, session) {
       tags$div(class = "eq-legend",
                tags$span(class = "eq-flag eq-new", "new"), " and ",
                tags$span(class = "eq-flag eq-changed", "changed"),
-               " mark what this lecture adds to the one before. The",
+               " mark what this stage adds to the one before. The",
                " Explanations tab says what each one does.")
     ))
   })
@@ -2747,7 +2751,8 @@ F_01_01_app_server_fn <- function(input, output, session) {
         lapply(its, function(x) {
           tags$tr(
             tags$td(class = "eq-label", HTML(x$label), flag(x$status)),
-            tags$td(tags$div(mj(x$tex)),
+            tags$td(class = "eq-math",
+                    tags$div(mj(x$tex)),
                     if (!is.null(x$was)) {
                       tags$div(class = "chg-was", "was ", mj(x$was))
                     }),
@@ -2825,7 +2830,7 @@ F_01_01_app_server_fn <- function(input, output, session) {
     if (!is.finite(bp)) return()
     if (stage_num() < 1.4 && bp < 1) {
       bp <- 1
-      showNotification(paste("Until lecture 1.4 β_π stays at or above one,",
+      showNotification(paste("Until stage 4 β_π stays at or above one,",
                              "so θ cannot go above one."), type = "message")
     }
     if (abs(bp - p$beta_pi) < 1e-9) push_ro("ro_theta", diag_now()$theta)

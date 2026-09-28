@@ -7,20 +7,21 @@ Macroeconomics, University College Dublin.
 **Try it in the browser (nothing to install):**
 https://sam-deegan.com/toy-models/is-mp-pc/
 
-Current version: **1.0.0** (see [CHANGELOG.md](CHANGELOG.md)). The version
+Current version: **1.0.1** (see [CHANGELOG.md](CHANGELOG.md)). The version
 is shown in the app footer; releases are tagged `vX.Y.Z`.
 
 ## What it does
 
-The lecture selector adds one layer of the model at a time:
+The stage selector adds one layer of the model at a time (the numbers in
+brackets are the ECON42550 lectures each stage follows):
 
-| Lecture | What is added |
+| Stage | What is added |
 |---|---|
-| 1.1 | The IS curve, the Phillips curve and the policy rule as three separate diagrams |
-| 1.2 | The solved model: the IS-MP / PC diagram, adaptive expectations, time paths |
-| 1.3 | The zero lower bound, and an output-gap term in the policy rule |
-| 1.4 | The Taylor principle relaxed (β<sub>π</sub> below one); a bank lending rate with a mark-up |
-| 1.5 | A financial accelerator: mark-ups that widen in downturns |
+| 1 (1.1) | The IS curve, the Phillips curve and the policy rule as three separate diagrams |
+| 2 (1.2) | The solved model: the IS-MP / PC diagram, adaptive expectations, time paths |
+| 3 (1.3) | The zero lower bound, and an output-gap term in the policy rule |
+| 4 (1.4) | The Taylor principle relaxed (β<sub>π</sub> below one); a bank lending rate with a mark-up |
+| 5 (1.5) | A financial accelerator: mark-ups that widen in downturns |
 
 Each lecture opens on a worked example (a demand shock, an energy shock, a
 deep recession at the lower bound, the Great Inflation, a banking crisis).
@@ -108,21 +109,21 @@ so `θ` measures how much of a change in expectations passes into inflation.
 With adaptive expectations (`π^e_t = π_{t−1}`), `θ` is also how much of a
 shock survives into next period: below one, shocks die out.
 
-**What the five lectures show with it**
+**What the five stages show with it**
 
-- *1.1* The three curves on their own, and what each parameter does to each.
-- *1.2* The solved model. Demand shocks move output and inflation together;
+- *Stage 1* The three curves on their own, and what each parameter does to each.
+- *Stage 2* The solved model. Demand shocks move output and inflation together;
   supply shocks move them apart, so the central bank faces a trade-off.
   Shocks persist because expectations carry last period's inflation forward.
-- *1.3* The zero lower bound. Once `i` hits zero, lower inflation *raises*
+- *Stage 3* The zero lower bound. Once `i` hits zero, lower inflation *raises*
   the real rate, the IS-MP curve slopes upwards, and a deep recession can
   turn into a deflationary spiral. Anchored expectations (`λ > 0`) stop it.
-- *1.4* The Taylor principle relaxed. With `β_π < 1` the real rate falls as
+- *Stage 4* The Taylor principle relaxed. With `β_π < 1` the real rate falls as
   inflation rises, the IS-MP curve slopes the wrong way, and inflation drifts
   away from target: the Great Inflation. A bank lending rate `ℓ = i + μ^B`
   puts a wedge between the policy rate and the rate borrowers face, so a
   banking crisis is a demand shock that policy cannot offset one-for-one.
-- *1.5* A financial accelerator. Mark-ups widen as output falls (`φ > 0`),
+- *Stage 5* A financial accelerator. Mark-ups widen as output falls (`φ > 0`),
   so each round of falling output tightens credit and lowers output again.
 
 **Where it departs from the textbook.** With `μ̄ = φ = 0` the lending rate
