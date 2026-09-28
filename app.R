@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.1"
+B_03_25_version_chr <- "1.0.2"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -1196,7 +1196,7 @@ D_02_01_is_block_fn <- function(par, eps_y, ref = NULL, ref_eps_y = 0) {
     scale_y_continuous(breaks = par$r_star, labels = expression(r^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = y_lim, expand = FALSE) +
-    labs(title = "Investment\u2013Saving (IS) Curve",
+    labs(
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Real interest rate (" * i[t] - pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1276,7 +1276,7 @@ D_02_02_pc_block_fn <- function(par, pi_e, eps_pi, ref = NULL,
     scale_y_continuous(breaks = par$pi_star, labels = expression(pi^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = y_lim, expand = FALSE) +
-    labs(title = "Phillips Curve (PC)",
+    labs(
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Inflation (" * pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1347,7 +1347,7 @@ D_02_03_mp_block_fn <- function(par, ref = NULL) {
                        labels = c(expression(0),
                                   expression(r^"*" + pi^"*"))) +
     coord_cartesian(xlim = p_lim, ylim = i_lim, expand = FALSE) +
-    labs(title = "Monetary Policy (MP) Rule",
+    labs(
          x = expression(bold("Inflation (" * pi[t] * ")")),
          y = expression(bold("Policy rate (" * i[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1735,8 +1735,7 @@ D_03_03_stability_fn <- function(par, beta_hi, beta_lo) {
     scale_y_continuous(breaks = par$pi_star, labels = expression(pi^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = p_lim, expand = FALSE) +
-    labs(title = paste0("The Taylor Principle: IS-MP Slopes Down Only When ",
-                        "the Rule Raises the Rate More Than One for One"),
+    labs(
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Inflation (" * pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
