@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.3"
+B_03_25_version_chr <- "1.0.4"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -1984,6 +1984,13 @@ E_01_01_theme_lst <- bs_theme(
 # Note: Tiles, equation tables, prompt, story, narration, controls, tabs, nav.
 
 E_01_02_css_chr <- "
+  /* Cards and panels are square: they organise the page, not decorate it */
+  .card, .card-header, .card-body, .card-footer, .bslib-card,
+  .bslib-sidebar-layout, .navset-card-tab, .nav-tabs .nav-link,
+  .accordion-item, .accordion-button, .story, .prompt, .problem,
+  .stat-tile, .stat-input input, .btn, .form-control, .form-select,
+  .badge { border-radius: 0 !important; }
+  .card, .bslib-card { box-shadow: none; }
   .stat-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .stat-caption { font-size: 0.8rem; color: #6C757D; margin: 0.2rem 0; }
   .stat-slot { flex: 1 1 11rem; display: flex; }
