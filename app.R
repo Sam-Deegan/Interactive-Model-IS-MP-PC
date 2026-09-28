@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.5"
+B_03_25_version_chr <- "1.0.6"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -1991,7 +1991,8 @@ E_01_02_css_chr <- "
   .stat-tile, .stat-input input, .btn, .form-control, .form-select,
   .badge { border-radius: 0 !important; }
   .card, .bslib-card { border: none; box-shadow: none; }
-  .card-header { border-bottom: none; background: transparent; }
+  .card-header { border-bottom: none; background: transparent;
+    color: #0056A4; font-weight: 700; }
   .card-footer { border-top: none; background: transparent; }
   .stat-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .stat-caption { font-size: 0.8rem; color: #6C757D; margin: 0.2rem 0; }
