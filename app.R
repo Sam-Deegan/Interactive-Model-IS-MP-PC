@@ -839,7 +839,7 @@ B_03_24_name_size_num <- 3.9
 ###### B_03_25: Version ########################################################
 # Note: Semantic version, shown in the footer; CHANGELOG.md has the history.
 
-B_03_25_version_chr <- "1.0.7"
+B_03_25_version_chr <- "1.0.8"
 
 ###### B_03_26: Source Repository ##############################################
 # Note: The GitHub repo, linked from the footer.
@@ -914,10 +914,13 @@ B_04_01_qr_src_chr <- paste0(
 #   y axis, "none" for a diagram.
 
 D_01_01_theme_fn <- function(base_size = B_03_06_base_size_int,
-                             grid = c("h", "none")) {
+                             grid = c("h", "none"), ratio = 2 / 3) {
   grid <- match.arg(grid)
   theme_bw(base_size = base_size) +
     theme(
+      # Every figure is 3:2 whatever box it is drawn in (CONVENTIONS.md 6);
+      #   the faceted time paths pass ratio = NULL
+      aspect.ratio     = ratio,
       panel.grid.minor   = element_blank(),
       panel.grid.major.x = element_blank(),
       panel.grid.major.y = if (grid == "h") {
@@ -937,11 +940,9 @@ D_01_01_theme_fn <- function(base_size = B_03_06_base_size_int,
                                       colour = B_03_05_palette_vec[["rule"]]),
       strip.text       = element_text(colour = B_03_05_palette_vec[["navy"]],
                                       face = "bold", hjust = 0),
-      plot.title.position = "plot",
-      plot.title       = element_text(colour = B_03_05_palette_vec[["navy"]],
-                                      face = "bold", hjust = 0),
-      plot.subtitle    = element_text(colour = B_03_05_palette_vec[["muted"]],
-                                      size = rel(0.85)),
+      # Titles sit in the card header, never inside the image
+      plot.title       = element_blank(),
+      plot.subtitle    = element_blank(),
       # Reading notes go under the figure, never inside it
       plot.caption     = element_blank(),
       axis.title       = element_text(colour = B_03_05_palette_vec[["ink"]],
@@ -1196,7 +1197,7 @@ D_02_01_is_block_fn <- function(par, eps_y, ref = NULL, ref_eps_y = 0) {
     scale_y_continuous(breaks = par$r_star, labels = expression(r^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = y_lim, expand = FALSE) +
-    labs(
+    labs(title = "Investment\u2013Saving (IS) Curve",
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Real interest rate (" * i[t] - pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1276,7 +1277,7 @@ D_02_02_pc_block_fn <- function(par, pi_e, eps_pi, ref = NULL,
     scale_y_continuous(breaks = par$pi_star, labels = expression(pi^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = y_lim, expand = FALSE) +
-    labs(
+    labs(title = "Phillips Curve (PC)",
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Inflation (" * pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1347,7 +1348,7 @@ D_02_03_mp_block_fn <- function(par, ref = NULL) {
                        labels = c(expression(0),
                                   expression(r^"*" + pi^"*"))) +
     coord_cartesian(xlim = p_lim, ylim = i_lim, expand = FALSE) +
-    labs(
+    labs(title = "Monetary Policy (MP) Rule",
          x = expression(bold("Inflation (" * pi[t] * ")")),
          y = expression(bold("Policy rate (" * i[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1678,7 +1679,7 @@ D_03_02_paths_fn <- function(sim_df, par, stage_num, t_show, shock_window,
            paste0("Values beyond +/-", B_03_11_path_cap_num,
                   " not drawn: the path explodes.")
          }) +
-    D_01_01_theme_fn()
+    D_01_01_theme_fn(ratio = NULL)
 }
 
 ###### D_03_03: Stability and the Taylor Principle #############################
@@ -1735,7 +1736,8 @@ D_03_03_stability_fn <- function(par, beta_hi, beta_lo) {
     scale_y_continuous(breaks = par$pi_star, labels = expression(pi^"*")) +
     scale_x_continuous(breaks = 0, labels = expression(y == y^"*")) +
     coord_cartesian(xlim = x_lim, ylim = p_lim, expand = FALSE) +
-    labs(
+    labs(title = paste0("The Taylor Principle: IS-MP Slopes Down Only When ",
+                        "the Rule Raises the Rate More Than One for One"),
          x = expression(bold("Output gap (" * y[t] - y[t]^"*" * ")")),
          y = expression(bold("Inflation (" * pi[t] * ")"))) +
     D_01_01_theme_fn(grid = "none") +
@@ -1993,6 +1995,26 @@ E_01_02_css_chr <- "
   .card, .bslib-card { border: none; box-shadow: none; }
   .card-header { border-bottom: none; background: transparent;
     color: #0056A4; font-weight: 700; }
+  .bslib-navs-card-title { display: flex; align-items: center; gap: 1rem;
+    flex-wrap: wrap; }
+  .bslib-navs-card-title .nav-tabs { border-bottom: none; margin: 0; }
+  .nav-tabs .nav-link { margin-bottom: 0; }
+  /* The stage name is the first tab: selected while the card is folded */
+  .eq-stage { padding: 0.5rem 1rem; cursor: pointer; font-weight: 600;
+    color: #0056A4; }
+  .eq-stage:hover { background: #F2F6F9; }
+  .eq-folded > .bslib-navs-card-title > .eq-stage { background: #0056A4;
+    color: #FFFFFF; font-weight: 700; }
+  .eq-folded > .tab-content { display: none; }
+  .eq-folded .nav-tabs .nav-link.active { background: transparent;
+    color: #6C757D; border-color: transparent; }
+  .eq-folded .nav-tabs .nav-link.active:hover { color: #0056A4;
+    background: #F2F6F9; }
+  .fig-r32 { width: 100%; }
+  @supports (aspect-ratio: 3 / 2) {
+    .fig-r32 > .shiny-plot-output { height: auto !important;
+      aspect-ratio: 3 / 2; min-height: 0; overflow: hidden; }
+  }
   .card-footer { border-top: none; background: transparent; }
   .stat-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .stat-caption { font-size: 0.8rem; color: #6C757D; margin: 0.2rem 0; }
@@ -2116,6 +2138,39 @@ E_01_03_mathjax_js_chr <- paste(
   "    MathJax.Hub.Queue(['Typeset', MathJax.Hub]);",
   "  }",
   "});"
+)
+
+###### E_01_04: Fold the Equations Card #######################################
+# Note: The equations card opens folded, so the figures sit high on the
+#   page, with the stage name drawn as the selected tab. Clicking a tab
+#   opens it; clicking the open tab again, or the stage name, folds it.
+
+E_01_04_eqfold_js_chr <- paste(
+  "document.addEventListener('DOMContentLoaded', function () {",
+  "  document.querySelectorAll('.card > .bslib-navs-card-title')",
+  "    .forEach(function (hdr) {",
+  "      var card = hdr.parentElement;",
+  "      card.classList.add('eq-folded');",
+  "      var name = hdr.querySelector(':scope > :not(.nav)');",
+  "      if (name) {",
+  "        name.classList.add('eq-stage');",
+  "        name.addEventListener('click', function () {",
+  "          card.classList.add('eq-folded');",
+  "        });",
+  "      }",
+  "      hdr.querySelectorAll('.nav-link').forEach(function (a) {",
+  "        a.addEventListener('click', function () {",
+  "          var open = !card.classList.contains('eq-folded');",
+  "          if (open && a.classList.contains('active')) {",
+  "            card.classList.add('eq-folded');",
+  "          } else {",
+  "            card.classList.remove('eq-folded');",
+  "          }",
+  "        }, true);",
+  "      });",
+  "    });",
+  "});",
+  sep = "\n"
 )
 
 ###### E_01_04: Site Navigation ################################################
@@ -2300,7 +2355,8 @@ E_03_03_app_ui_lst <- tagList(
       "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js",
       "?config=TeX-AMS-MML_HTMLorMML")),
     tags$script(HTML(E_01_03_mathjax_js_chr)),
-    tags$script(HTML(T_05_05_preset_js_chr))
+    tags$script(HTML(T_05_05_preset_js_chr)),
+    tags$script(HTML(E_01_04_eqfold_js_chr))
   ),
   navset_card_tab(
     title = textOutput("eq_title", inline = TRUE),
@@ -2315,9 +2371,15 @@ E_03_03_app_ui_lst <- tagList(
     "input.stage == '1.1'",
     layout_columns(
       col_widths = breakpoints(sm = 12, md = c(6, 6, 12), lg = c(4, 4, 4)),
-      card(plotOutput("block_is", height = B_03_07_block_height_chr)),
-      card(plotOutput("block_pc", height = B_03_07_block_height_chr)),
-      card(plotOutput("block_mp", height = B_03_07_block_height_chr))
+      card(card_header("Investment\u2013Saving (IS) Curve"),
+           tags$div(class = "fig-r32",
+                    plotOutput("block_is", height = B_03_07_block_height_chr))),
+      card(card_header("Phillips Curve (PC)"),
+           tags$div(class = "fig-r32",
+                    plotOutput("block_pc", height = B_03_07_block_height_chr))),
+      card(card_header("Monetary Policy (MP) Rule"),
+           tags$div(class = "fig-r32",
+                    plotOutput("block_mp", height = B_03_07_block_height_chr)))
     ),
     tags$div(
       class = "stat-caption",
@@ -2387,7 +2449,8 @@ E_03_03_app_ui_lst <- tagList(
                     step = 1, width = "100%",
                     animate = animationOptions(
                       interval = B_03_19_play_interval_int)),
-        plotOutput("diagram", height = B_03_08_diagram_height_chr)
+        tags$div(class = "fig-r32",
+                 plotOutput("diagram", height = B_03_08_diagram_height_chr))
       ),
       card(
         card_header("Time Paths"),
@@ -2670,8 +2733,7 @@ F_01_01_app_server_fn <- function(input, output, session) {
 
   # --- Equations, notation and explanation tabs -------------------------------
   output$eq_title <- renderText({
-    paste0("Stage ", match(input$stage, B_03_03_stages_vec),
-           ": The Model So Far")
+    names(B_03_03_stages_vec)[match(input$stage, B_03_03_stages_vec)]
   })
 
   mj <- function(tex) HTML(paste0("\\(", tex, "\\)"))
